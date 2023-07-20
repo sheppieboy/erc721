@@ -66,4 +66,8 @@ contract ERC721 is IERC721 {
         require(_ownerOf[tokenId] != address(0), "Invalid owner");
         return _approvals[tokenId];
     }
+
+    function _isApprovedOrOwner(address owner, address spender, uint256 tokenId) internal view returns (bool) {
+        return (spender == owner || isApprovedForAll[owner][spender] || spender == _approvals[tokenId]);
+    }
 }
