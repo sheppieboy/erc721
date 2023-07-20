@@ -128,3 +128,14 @@ contract ERC721 is IERC721 {
         emit Transfer(owner, address(0), tokenId);
     }
 }
+
+contract TestNFT is ERC721 {
+    function mint(address to, uint256 tokenId) external {
+        _mint(to, tokenId);
+    }
+
+    function burn(uint256 id) external {
+        require(msg.sender == _ownerOf[id], "not owner");
+        _burn(id);
+    }
+}
