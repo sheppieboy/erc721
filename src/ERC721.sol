@@ -61,4 +61,9 @@ contract ERC721 is IERC721 {
         _approvals[tokenId] = spender;
         emit Approval(owner, spender, tokenId);
     }
+
+    function getApproved(uint256 tokenId) external view returns (address) {
+        require(_ownerOf[tokenId] != address(0), "Invalid owner");
+        return _approvals[tokenId];
+    }
 }
