@@ -74,4 +74,17 @@ contract ERC721 is IERC721 {
     function _isApprovedOrOwner(address owner, address spender, uint256 tokenId) internal view returns (bool) {
         return (spender == owner || isApprovedForAll[owner][spender] || spender == _approvals[tokenId]);
     }
+
+    function transferFrom(address from, address to, uint256 tokenId) public {
+        require(from == _ownerOf[tokenId], "from not owner");
+        require(to != address(0), "Don't transfer to zero address");
+        require(_isApprovedOrOwner(from, msg.sender, tokenId), "Not an authorized user");
+
+        _balanceOf[from]--;
+        _balanceOf[to]--;
+        _ownerOf[tokenId] = to;
+        delete _approvals[tokenId];
+
+        emit Transfer(from, to, tokenId);
+    }
 }
