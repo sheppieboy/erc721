@@ -17,7 +17,7 @@ interface IERC721 is IERC165 {
     function isApprovedForAll(address owner, address operator) external view returns (bool);
 }
 
-interface IERC721Reciever {
+interface IERC721Receiver {
     function onERC721Received(address operator, address from, uint256 tokenId, bytes calldata data)
         external
         returns (bytes4);
@@ -86,5 +86,27 @@ contract ERC721 is IERC721 {
         delete _approvals[tokenId];
 
         emit Transfer(from, to, tokenId);
+    }
+
+    function safeTransferFrom(address from, address to, uint256 id) external {
+        transferFrom(from, to, id);
+
+        require(
+            to.code.length == 0
+                || IERC721Receiver(to).onERC721Received(msg.sender, from, id, "")
+                    == IERC721Receiver.onERC721Received.selector,
+            "unsafe recipient"
+        );
+    }
+
+    function safeTransferFrom(address from, address to, uint256 id, bytes calldata data) external {
+        transferFrom(from, to, id);
+
+        require(
+            to.code.length == 0
+                || IERC721Receiver(to).onERC721Received(msg.sender, from, id, data)
+                    == IERC721Receiver.onERC721Received.selector,
+            "unsafe recipient"
+        );
     }
 }
