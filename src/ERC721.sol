@@ -24,7 +24,11 @@ interface IERC721Reciever {
 }
 
 contract ERC721 is IERC721 {
+    event Transfer(address indexed from, address indexed to, uint256 indexed id);
+    event Approval(address indexed owner, address indexed spender, uint256 indexed id);
+    event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
     //mapping from token id to owner address
+
     mapping(uint256 => address) internal _ownerOf;
 
     //mapping owner address to token count
