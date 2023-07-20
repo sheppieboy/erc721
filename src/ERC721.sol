@@ -39,4 +39,19 @@ contract ERC721 is IERC721 {
     function supportsInterface(bytes4 interfaceId) external pure returns (bool) {
         return interfaceId == type(IERC721).interfaceId || interfaceId == type(IERC165).interfaceId;
     }
+
+    function ownerOf(uint256 id) external view returns (address owner) {
+        owner = _ownerOf[id];
+        require(owner != address(0), "token doesn't exist");
+    }
+
+    function balanceOf(address owner) external view returns (uint256) {
+        require(owner != address(0), "owner = zero address");
+        return _balanceOf[owner];
+    }
+
+    function setApprovalForAll(address operator, bool approved) external {
+        isApprovedForAll[msg.sender][operator] = approved;
+        emit ApprovalForAll(msg.sender, operator, approved);
+    }
 }
