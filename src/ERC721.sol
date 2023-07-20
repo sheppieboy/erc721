@@ -118,4 +118,13 @@ contract ERC721 is IERC721 {
         _ownerOf[tokenId] = to;
         emit Transfer(address(0), to, tokenId);
     }
+
+    function _burn(uint256 tokenId) internal {
+        address owner = _ownerOf[tokenId];
+        require(owner != address(0), "not minted");
+        _balanceOf[owner] -= 1;
+        delete _ownerOf[tokenId];
+        delete _approvals[tokenId];
+        emit Transfer(owner, address(0), tokenId);
+    }
 }
