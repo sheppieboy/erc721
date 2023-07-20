@@ -22,3 +22,21 @@ interface IERC721Reciever {
         external
         returns (bytes4);
 }
+
+contract ERC721 is IERC721 {
+    //mapping from token id to owner address
+    mapping(uint256 => address) internal _ownerOf;
+
+    //mapping owner address to token count
+    mapping(address => uint256) internal _balanceOf;
+
+    //mapping from token id to approved address
+    mapping(uint256 => address) internal _approvals;
+
+    //mapping from owner to operator approvals
+    mapping(address => mapping(address => bool)) public isApprovedForAll;
+
+    function supportsInterface(bytes4 interfaceId) external pure returns (bool) {
+        return interfaceId == type(IERC721).interfaceId || interfaceId == type(IERC165).interfaceId;
+    }
+}
